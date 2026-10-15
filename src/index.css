@@ -1,0 +1,309 @@
+
+/* Tailwind layers */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-abyss-900 font-body text-mist-100 antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid #a9c4e4;
+    outline-offset: 3px;
+  }
+}
+
+/* ========================================
+   SECTION REVEAL
+======================================== */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ========================================
+   SKILL CARDS
+   Abyss-blue, darker hover, no gradients
+======================================== */
+
+.skill-card {
+  isolation: isolate;
+  animation: skill-card-enter 650ms
+    cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: calc(var(--card-index, 0) * 65ms);
+
+  box-shadow: 0 5px 14px rgb(1 10 24 / 18%);
+  transform: translateY(0) scale(1);
+
+  transition:
+    transform 360ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 260ms ease,
+    background-color 260ms ease,
+    box-shadow 360ms ease;
+}
+
+/* Blue line sweeps across the top */
+.skill-card::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #1457a8;
+
+  transform: scaleX(0);
+  transform-origin: left center;
+
+  transition:
+    transform 360ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Logo container */
+.skill-logo-wrap {
+  background-color: #07234a;
+  box-shadow: inset 0 0 0 1px rgb(169 196 228 / 7%);
+
+  transition:
+    background-color 280ms ease,
+    box-shadow 280ms ease,
+    transform 360ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Logo motion */
+.skill-logo {
+  transform: translateY(0) rotate(0deg) scale(1);
+
+  transition:
+    transform 360ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Skill name */
+.skill-name {
+  transition:
+    color 260ms ease,
+    transform 360ms cubic-bezier(0.16, 1, 0.3, 1),
+    letter-spacing 260ms ease;
+}
+
+/* Hover effects for mouse and trackpad */
+@media (hover: hover) and (pointer: fine) {
+  .skill-card:hover {
+    background-color: #010a18;
+    border-color: #1457a8;
+
+    transform: translateY(-10px) scale(1.035);
+
+    box-shadow:
+      0 18px 32px rgb(0 0 0 / 38%),
+      inset 0 0 0 1px rgb(20 87 168 / 16%);
+  }
+
+  .skill-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .skill-card:hover .skill-logo-wrap {
+    background-color: #041a3a;
+
+    box-shadow:
+      inset 0 0 0 1px rgb(111 146 189 / 28%);
+
+    transform: translateY(-4px) rotate(-3deg);
+  }
+
+  .skill-card:hover .skill-logo {
+    transform: scale(1.14) rotate(7deg);
+  }
+
+  .skill-card:hover .skill-name {
+    color: #a9c4e4;
+    transform: translateY(2px);
+    letter-spacing: 0.035em;
+  }
+}
+
+/* Keyboard focus */
+.skill-card:focus-within {
+  border-color: #6f92bd;
+  outline: 2px solid #6f92bd;
+  outline-offset: 3px;
+}
+
+/* Cards enter with a small upward movement */
+@keyframes skill-card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ========================================
+   NAVBAR CIRCLE INTRO
+======================================== */
+
+.navbar-intro {
+  transform-origin: center top;
+
+  animation: navbar-circle-drop 850ms
+    cubic-bezier(0.2, 0.75, 0.25, 1) both;
+}
+
+.navbar-intro nav {
+  clip-path: circle(0% at 50% 50%);
+
+  animation: navbar-circle-spread 900ms
+    cubic-bezier(0.2, 0.75, 0.25, 1) 120ms both;
+}
+
+.navbar-link {
+  animation: navbar-link-enter 480ms ease-out both;
+
+  animation-delay: calc(
+    260ms + var(--link-index, 0) * 65ms
+  );
+}
+
+@keyframes navbar-circle-drop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -18px) scale(0.94);
+  }
+
+  45% {
+    opacity: 1;
+    transform: translate(-50%, 3px) scale(1);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}
+
+@keyframes navbar-circle-spread {
+  0% {
+    clip-path: circle(0% at 50% 50%);
+  }
+
+  100% {
+    clip-path: circle(150% at 50% 50%);
+  }
+}
+
+@keyframes navbar-link-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ========================================
+   REDUCED MOTION ACCESSIBILITY
+======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  .navbar-intro,
+  .navbar-intro nav,
+  .navbar-link {
+    clip-path: none;
+  }
+
+  .skill-card {
+    opacity: 1;
+    transform: none;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  
+/* Hide the browser scrollbar without disabling page scrolling. */
+html {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+/* Thin abyss-blue scroll progress indicator. */
+.scroll-progress-track {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9000;
+  width: 100%;
+  height: 3px;
+  overflow: hidden;
+  pointer-events: none;
+  background-color: #13233e;
+}
+
+.scroll-progress-fill {
+  height: 100%;
+  background-color: #2878ff;
+  box-shadow: 0 0 8px rgb(40 120 255 / 35%);
+  transition: width 90ms linear;
+}
+
+
+@layer base {
+  html {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+}
+
+
+}
